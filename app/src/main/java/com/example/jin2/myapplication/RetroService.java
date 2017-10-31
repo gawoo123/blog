@@ -51,6 +51,12 @@ public interface RetroService {
             @Field("idx") String id
     );
 
+    @FormUrlEncoded
+    @POST("mainList.php")
+    Call<Contributor> listContribuotrs(
+            @Field("id") String id
+    );
+
     public static final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://52.78.156.24/app/")
             .addConverterFactory(GsonConverterFactory.create())

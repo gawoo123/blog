@@ -1,19 +1,71 @@
 package com.example.jin2.myapplication;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Created by jin2 on 2017-10-19.
  */
 
 public class Contributor {
 
-    String res;
 
-//    String authorization="AWS4-HMAC-SHA256 Credential=AKIAICV4Q3BLQ35SR4GQ/20171020/ap-northeast-2/execute-api/aws4_request, SignedHeaders=content-length;content-type;host;x-amz-date, Signature=5f6dfc2e8ade63bfae80a81f3411e20f1bcdd8acade24df518d38cfe47a3ad4e";
+    public List<Post> getPost() {
+        return post;
+    }
+
+    public List<Push> getPush() {
+        return push;
+    }
+
+    @SerializedName("post_list")
+    List<Post> post  = null;
+
+    @SerializedName("push_list")
+    List<Push> push = null;
 
 
-
-    @Override
-    public String toString() {
+    public String getRes() {
         return res;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    String res;
+    String url;
+
+
+    public class Post{
+        @SerializedName("url") String url;
+        @SerializedName("date") String date;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public String getDate() {
+            return date;
+        }
+    }
+    public class Push{
+        @SerializedName("category_idx") String idx;
+        @SerializedName("date") String date;
+
+        public String getIdx() {
+            return idx;
+        }
+
+        public String getDate() {
+            return date;
+        }
+    }
+    @Override
+    public String toString() {
+        return post+"/"+"/"+getUrl();
+    }
+
+
 }
