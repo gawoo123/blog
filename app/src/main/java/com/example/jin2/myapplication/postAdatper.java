@@ -1,5 +1,6 @@
 package com.example.jin2.myapplication;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,10 +44,17 @@ public class postAdatper extends BaseAdapter {
             convertView = inflater.inflate(R.layout.post_item, parent, false);
         }
 
-        TextView date = (TextView) convertView.findViewById(R.id.post_date);
+        final TextView date = (TextView) convertView.findViewById(R.id.post_date);
 
         post_item item = postItemArrayList.get(position);
         date.setText(item.getDate());
+
+//        date.setOn(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//               System.out.println("눌림 --> "+postItemArrayList.get(pos).getUrl());
+//            }
+//        });
 
         System.out.println("adpter post date ->"+item.getDate());
 

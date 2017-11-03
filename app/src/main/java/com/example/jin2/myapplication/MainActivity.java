@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     String url = "52.78.156.24/blog_api/index.php";
 
-
+   static FragmentTransaction transaction;
 
 
     @Override
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                                 selectedFragment = myInfo.newInstance();
                                 break;
                         }
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                         transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.content, selectedFragment);
                         transaction.commit();
                         return true;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         //Manually displaying the first fragment - one time only
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content, test.newInstance());
         transaction.commit();
 

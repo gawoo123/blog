@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,6 +36,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 public class Login extends AppCompatActivity {
 
     EditText idInput, passwordInput;
@@ -47,6 +50,8 @@ public class Login extends AppCompatActivity {
 
     String id;
     String pw;
+
+
 
 
     @Override

@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,7 +32,11 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -123,8 +128,46 @@ public class push_detail extends Fragment {//
                 // SDK 4.1.4 버전부터는 OAUTH_CALLBACK_INTENT변수를 사용하지 않습니다.
         );
 
-        
-        
+
+        Button btnSave = (Button) view.findViewById(R.id.button2);
+        Button.OnClickListener btnSaveOnClickListener =
+                new Button.OnClickListener() {
+
+                    public void onClick(View arg0) {
+                        OutputStream outStream = null;
+                        String extStorageDirectory =
+                                Environment.getExternalStorageDirectory().toString();
+
+                        File file = new File(extStorageDirectory,        "test.jpg");
+                        try {
+                            outStream = new FileOutputStream(file);
+//                            mSaveBm.compress(
+//                                    Bitmap.CompressFormat.PNG, 100, outStream);
+//                            outStream.flush();
+//                            outStream.close();
+
+                            System.out.println("경로 "+ extStorageDirectory);
+
+                            Toast.makeText(getActivity(),
+                                    "Saved", Toast.LENGTH_LONG).show();
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getActivity(),
+                                    e.toString(), Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getActivity(),
+                                    e.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                };
+
+        btnSave.setOnClickListener(btnSaveOnClickListener);
+
+
+
+
         return view;
 
 
@@ -167,7 +210,7 @@ public class push_detail extends Fragment {//
                             String title = "네이버 multi-part 이미지 첨부 테스트";
                             // blog 글쓰기 필수 요청변수 contents - 첨부이미지는 <img src='#0' />, <img src='#1' /> ... 으로 참조 가능
                             String contents = "<font color='red'>multi-part</font>로 첨부한 글입니다. <br>  이미지 첨부 <br> <img src='#0' />";
-                            contents=contents+"<img src='http://52.78.156.24/img/a1.jpg'>";
+
 
                             mu.addFormField("title", title);
                             mu.addFormField("contents", contents);
@@ -175,8 +218,10 @@ public class push_detail extends Fragment {//
                             // [시작] image 첨부 로직 - 필요시 이미지수 만큼 반복
 //                            String test="http://52.78.156.24/img/a1.jpg";
 ////                            System.out.println("왜 짤리니 "+header);
-//                            File uploadFile1 = new File(test);
-//                            mu.addFilePart("image", uploadFile1);
+                            File uploadFile1 = new File(Environment.getExternalStorageDirectory().toString()+"/test.jpg");
+                            mu.addFilePart("image", uploadFile1);
+//                            File uploadFile2 = new File(Environment.getExternalStorageDirectory().toString()+"/downimage.PNG");
+//                            mu.addFilePart("image", uploadFile2);
                             // [종료] 이미지 첨부 로직 - 필요시 이미지수 만큼 반복
 
                             // HTTP 호출 결과 수신
@@ -186,8 +231,8 @@ public class push_detail extends Fragment {//
 
                             for (Object line : response) {
                                 test= String.valueOf(response);
-                                System.out.println("가라"+test);
-                                System.out.println("part1:"+line);
+//                                System.out.println("가라"+test);
+//                                System.out.println("part1:"+line);
                             }
 //                            JSONArray jsonArray = new JSONArray(test);
 //                            JSONObject jsonObject = new JSONObject();

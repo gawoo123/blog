@@ -1,16 +1,25 @@
 package com.example.jin2.myapplication;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,10 +46,6 @@ public class main_menu extends Fragment {
     pushAdapter push_adapter;
     postAdatper post_adapter;
 
-
-
-
-
     public static main_menu newInstance() {
         main_menu fragment = new main_menu();
         return fragment;
@@ -50,6 +55,8 @@ public class main_menu extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.menu_main,container,false);
+
+        Button btnSave = (Button) view.findViewById(R.id.button2);
 
 
         push_adapter = new pushAdapter();
@@ -61,15 +68,20 @@ public class main_menu extends Fragment {
         post_list.setAdapter(post_adapter);
         push_list.setAdapter(push_adapter);
 
+        final com.example.jin2.myapplication.post_item[] item = {new post_item()};
 
-        return view;
-    }
+        post_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                item[0] = (com.example.jin2.myapplication.post_item) post_adapter.getItem(position);
+                System.out.println("눌림 -->"+item[0].getUrl());
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+                MainActivity.transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-        final Contributor.Post post = (Contributor.Post) new Contributor().post;
+                MainActivity.transaction.replace(R.id.content,post_link.newInstance());
+                MainActivity.transaction.commit();
+            }
+        });
 
         RetroService gitHubService = RetroService.retrofit.create(RetroService.class);
         Call<Contributor> call = gitHubService.listContribuotrs("id0");
@@ -79,16 +91,17 @@ public class main_menu extends Fragment {
             public void onResponse(Call<Contributor> call,
                                    Response<Contributor> response) {
 
-                System.out.println("api res ->>>> " + response.body());
 
-                System.out.println("api res1 ->>>> " + response.body().getPush().get(0).getIdx());
-                System.out.println("api res 2->>>> " + response.body().getPush().get(0).getDate());
-                post_adapter.addItem(response.body().getPost().get(0).getDate(),response.body().getPost().get(0).getUrl());
-                push_adapter.addItem(response.body().getPush().get(0).getDate(), response.body().getPush().get(0).getIdx());
+                for(int i=0; i<response.body().getPush().size();i++){
+                    push_adapter.addItem(response.body().getPush().get(i).getDate(),response.body().getPush().get(i).getIdx());
+                }
 
+                for(int i=0; i<response.body().getPost().size();i++){
+                    post_adapter.addItem(response.body().getPost().get(i).getDate(),response.body().getPost().get(i).getUrl());
+                }
 
-                System.out.println("api res1 ->>>> " + response.body().getPost().get(0).getDate());
-                System.out.println("api res 2->>>> " + response.body().getPost().get(0).getUrl());
+                post_adapter.notifyDataSetChanged();
+                push_adapter.notifyDataSetChanged();
 
             }
             @Override
@@ -102,9 +115,12 @@ public class main_menu extends Fragment {
 
 
 
+        return view;
+    }
 
-
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
     }
 
