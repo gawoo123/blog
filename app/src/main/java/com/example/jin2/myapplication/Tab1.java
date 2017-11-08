@@ -1,38 +1,27 @@
 package com.example.jin2.myapplication;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.POST;
 
 /**
  * Created by jin2 on 2017-10-18.
  */
 
-public class main_menu extends Fragment {
+public class Tab1 extends Fragment {
 
 
     @BindView(R.id.push_list)
@@ -46,15 +35,18 @@ public class main_menu extends Fragment {
     pushAdapter push_adapter;
     postAdatper post_adapter;
 
-    public static main_menu newInstance() {
-        main_menu fragment = new main_menu();
+
+//    OAuthLogin mOAuthLoginModule;
+
+    public static Tab1 newInstance() {
+        Tab1 fragment = new Tab1();
         return fragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.menu_main,container,false);
+        View view =inflater.inflate(R.layout.tab1_lay,container,false);
 
         Button btnSave = (Button) view.findViewById(R.id.button2);
 
@@ -70,6 +62,16 @@ public class main_menu extends Fragment {
 
         final com.example.jin2.myapplication.post_item[] item = {new post_item()};
 
+        push_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MainActivity.transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                MainActivity.transaction.replace(R.id.content,Preview.newInstance(item[0].getUrl()));
+                MainActivity.transaction.commit();
+            }
+        });
+
         post_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -78,7 +80,7 @@ public class main_menu extends Fragment {
 
                 MainActivity.transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                MainActivity.transaction.replace(R.id.content,post_link.newInstance());
+                MainActivity.transaction.replace(R.id.content,post_link.newInstance(item[0].getUrl()));
                 MainActivity.transaction.commit();
             }
         });
@@ -115,8 +117,33 @@ public class main_menu extends Fragment {
 
 
 
+
         return view;
     }
+
+//    private OAuthLoginHandler mOAuthLoginHandler = new OAuthLoginHandler() {
+//        @Override
+//        public void run(boolean success) {
+//            if (success) {
+//                // 네이버 아이디로 로그인 인증이 성공했을 때 수행할 코드 추가
+////
+////                RequestApiTask requestApiTask = new RequestApiTask();
+////                requestApiTask.execute();
+//                Toast.makeText(getContext(),"이미 아이디가 등록 되어있습니다.",Toast.LENGTH_LONG);
+//                MainActivity.naverCheck=true;
+//            } else {
+//                String errorCode = OAuthLogin.getInstance()
+//                        .getLastErrorCode(getContext()).getCode();
+//                String errorDesc = OAuthLogin.getInstance().getLastErrorDesc(getContext());
+//                Toast.makeText(getContext(), "errorCode:" + errorCode
+//                        + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
+//                MainActivity.naverCheck=false;
+//            }
+//
+//
+//        };
+//    };
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

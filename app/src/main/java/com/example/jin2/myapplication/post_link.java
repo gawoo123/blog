@@ -14,7 +14,9 @@ import android.webkit.WebView;
 
 public class post_link extends Fragment{
 
-    public static post_link newInstance() {
+    static String url;
+    public static post_link newInstance(String url_) {
+        url=url_;
         post_link fragment = new post_link();
         return fragment;
     }
@@ -24,7 +26,7 @@ public class post_link extends Fragment{
 
         View view = inflater.inflate(R.layout.link_post,container,false);
         WebView webView = (WebView) view.findViewById(R.id.main_web_view);
-        webView.loadUrl("http://www.google.com");
+        webView.loadUrl(url);
 
 
 

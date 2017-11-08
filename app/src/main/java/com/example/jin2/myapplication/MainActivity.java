@@ -1,8 +1,5 @@
 package com.example.jin2.myapplication;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,8 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
-import java.net.HttpURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     String url = "52.78.156.24/blog_api/index.php";
 
    static FragmentTransaction transaction;
+
+   static boolean naverCheck;
 
 
     @Override
@@ -44,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
                             case R.id.navigation_home:
-                                selectedFragment = main_menu.newInstance();
+                                selectedFragment = Tab1.newInstance();
                                 break;
                             case R.id.navigation_dashboard:
-                                selectedFragment = push_detail.newInstance();
+                                selectedFragment = Tab2.newInstance();
                                 break;
                             case R.id.navigation_notifications:
-                                selectedFragment = myInfo.newInstance();
+                                selectedFragment = Tab3.newInstance();
                                 break;
                         }
                          transaction = getSupportFragmentManager().beginTransaction();
