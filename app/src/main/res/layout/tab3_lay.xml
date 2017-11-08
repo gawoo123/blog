@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,27 +21,33 @@
             android:id="@+id/naverLogout_check"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:textOn="ON"
+            android:textOff="ON"
             android:layout_marginRight="30dp"
-            android:background="@android:drawable/button_onoff_indicator_off"
-            android:text="ToggleButton" />
+            android:background="@android:drawable/button_onoff_indicator_off" />
     </LinearLayout>
 
     <Button
         android:id="@+id/naverLogout_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_height="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+
+        android:text="로그아웃" />
 
     <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
         android:id="@+id/buttonOAuthLoginImg"
-        android:layout_width="200dp"
-        android:layout_height="100dp" />
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="안쓰는버튼" />
 
 
 </LinearLayout>

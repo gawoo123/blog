@@ -1,5 +1,6 @@
 package com.example.jin2.myapplication;
 
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,6 +32,11 @@ public class Tab3 extends Fragment{
     String accessToken;
     String tokenType;
 
+    Button logout_btn;
+    OAuthLoginButton mOAuthLoginButton;
+    Handler handler;
+
+    Button login_check_btn;
 
 
     @Override
@@ -47,11 +53,11 @@ public class Tab3 extends Fragment{
 
         View view = inflater.inflate(R.layout.tab3_lay,container,false);
 
+        handler = new Handler();
 
-        OAuthLoginButton mOAuthLoginButton = (OAuthLoginButton) view.findViewById(R.id.buttonOAuthLoginImg);
+
+        mOAuthLoginButton = (OAuthLoginButton) view.findViewById(R.id.buttonOAuthLoginImg);
         mOAuthLoginButton.setOAuthLoginHandler(mOAuthLoginHandler);
-
-
         mOAuthLoginModule = OAuthLogin.getInstance();
         mOAuthLoginModule.init(
                 getActivity()
@@ -62,54 +68,55 @@ public class Tab3 extends Fragment{
                 // SDK 4.1.4 버전부터는 OAUTH_CALLBACK_INTENT변수를 사용하지 않습니다.
         );
 
+       login_check_btn = (Button) view.findViewById(R.id.naverLogout_check);
 
-        Button button = (Button) view.findViewById(R.id.naverLogout_btn);
-        button.setOnClickListener(new View.OnClickListener() {
+
+        logout_btn = (Button) view.findViewById(R.id.naverLogout_btn);
+
+        String login_check  = String.valueOf(mOAuthLoginModule.getState(getContext()));
+
+
+        if(login_check.equals("NEED_LOGIN")){
+            mOAuthLoginButton.setVisibility(View.VISIBLE);
+            logout_btn.setVisibility(View.GONE);
+            login_check_btn.setBackgroundResource(android.R.drawable.button_onoff_indicator_off);
+        }else if(login_check.equals("OK")){
+            mOAuthLoginButton.setVisibility(View.GONE);
+            logout_btn.setVisibility(View.VISIBLE);
+
+            login_check_btn.setBackgroundResource(android.R.drawable.button_onoff_indicator_on);
+        }else{
+            Toast.makeText(getContext(),"error : "+login_check,Toast.LENGTH_LONG);
+        }
+
+
+        logout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent =new Intent(getContext(),API.class);
-//                startActivity(intent);
-
-                Toast.makeText(getContext(),"@@@@",Toast.LENGTH_SHORT);
-//
-//                RequestApiTask requestApiTask = new RequestApiTask();
-//                requestApiTask.execute();
-
-
-
-//                OAuthLogin.getInstance().startOauthLoginActivity(getActivity(), mOAuthLoginHandler);
                 new Thread(){
                     @Override
                     public void run() {
                         OAuthLogin.getInstance().logoutAndDeleteToken(getContext());
 
-                        mOAuthLoginModule.requestApi(getContext(), accessToken, "http://52.78.156.24/blog_api/index.php");
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mOAuthLoginButton.setVisibility(View.VISIBLE);
+                                logout_btn.setVisibility(View.GONE);
+                                login_check_btn.setBackgroundResource(android.R.drawable.button_onoff_indicator_off);
+                            }
+                        });
+
 
                     }
                 }.start();
             }
         });
 
-        final TextView textView = (TextView) view.findViewById(R.id.textView7);
-
         Button btn = (Button) view.findViewById(R.id.button3);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                String msg  = String.valueOf(mOAuthLoginModule.getState(getContext()));
-//                textView.setText(msg);
-                if(msg.equals("NEED_LOGIN")){
-                    textView.setText("ㄴㄴㄴㄴㄴㄴ");
-                }else if(msg.equals("OK")){
-                    textView.setText("ㅇㅇㅇㅇ");
-                }else{
-                    textView.setText("에러");
-                }
-
-            }
-        });
 
 
 //
@@ -166,6 +173,9 @@ public class Tab3 extends Fragment{
 //                requestApiTask.execute();
                 Toast.makeText(getContext(),"이미 아이디가 등록 되어있습니다.",Toast.LENGTH_LONG);
                 MainActivity.naverCheck=true;
+                mOAuthLoginButton.setVisibility(View.GONE);
+                logout_btn.setVisibility(View.VISIBLE);
+                login_check_btn.setBackgroundResource(android.R.drawable.button_onoff_indicator_on);
             } else {
                 String errorCode = OAuthLogin.getInstance()
                         .getLastErrorCode(getContext()).getCode();
