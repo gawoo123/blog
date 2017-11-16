@@ -58,10 +58,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         //Manually displaying the first fragment - one time only
-         transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content, test.newInstance());
-        transaction.commit();
-
 
 
 //        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -94,5 +90,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
 
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content, Tab1.newInstance());
+        transaction.commit();
+
+
+        super.onResume();
+    }
 }

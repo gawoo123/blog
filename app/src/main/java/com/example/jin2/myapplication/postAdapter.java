@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by jin on 2017-10-31.
  */
 
-public class postAdatper extends BaseAdapter {
+public class postAdapter extends BaseAdapter {
 
     ArrayList<post_item> postItemArrayList = new ArrayList<post_item>();
 
@@ -56,7 +56,7 @@ public class postAdatper extends BaseAdapter {
 //            }
 //        });
 
-        System.out.println("adpter post date ->"+item.getDate());
+
 
         return convertView;
     }

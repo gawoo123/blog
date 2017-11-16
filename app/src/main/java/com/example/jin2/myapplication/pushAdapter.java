@@ -47,9 +47,6 @@ public class pushAdapter extends BaseAdapter {
         push_item item = push_list.get(position);
         date.setText(item.getDate());
 
-        System.out.println("adpter push date ->"+item.getDate());
-
-
         return convertView;
     }
 

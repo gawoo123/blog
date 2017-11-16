@@ -1,4 +1,4 @@
-package com.example.jin2.myapplication;
+package com.example.jin2.myapplication.retrofit;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -86,6 +86,9 @@ public class Tab3 extends Fragment{
 
             login_check_btn.setBackgroundResource(android.R.drawable.button_onoff_indicator_on);
         }else{
+            mOAuthLoginButton.setVisibility(View.VISIBLE);
+            logout_btn.setVisibility(View.GONE);
+            login_check_btn.setBackgroundResource(android.R.drawable.button_onoff_indicator_off);
             Toast.makeText(getContext(),"error : "+login_check,Toast.LENGTH_LONG);
         }
 

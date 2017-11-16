@@ -7,36 +7,22 @@ package com.example.jin2.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.http.AmazonHttpClient;
-import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
-import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
-import com.amazonaws.regions.Regions;
-
-import java.io.IOException;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
-import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.example.jin2.myapplication.retrofit.Contributor;
+import com.example.jin2.myapplication.retrofit.RetroService;
+import com.example.jin2.myapplication.presentser.LoginPresnter;
 
 public class Login extends AppCompatActivity {
 
@@ -47,9 +33,10 @@ public class Login extends AppCompatActivity {
     SharedPreferences.Editor editor;
     Button login_btn;
     Button sign_btn;
-
     String id;
     String pw;
+
+    LoginPresnter loginPresnter;
 
 
 
@@ -58,15 +45,13 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
         idInput = (EditText) findViewById(R.id.emailInput);
         passwordInput = (EditText) findViewById(R.id.passwordInput);
         autoLogin = (CheckBox) findViewById(R.id.checkBox);
         login_btn = (Button) findViewById(R.id.loginButton);
         sign_btn = (Button) findViewById(R.id.signupButton);
-
-
         idInput.setText("id0");
-
         passwordInput.setText("pw0");
 
         login_btn.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +60,8 @@ public class Login extends AppCompatActivity {
 
                 id= String.valueOf(idInput.getText());
                 pw= String.valueOf(passwordInput.getText());
-
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                startActivity(intent);
 
                 RetroService gitHubService = RetroService.retrofit.create(RetroService.class);
                 Call<Contributor> call = gitHubService.loginContributors("id0", "pw0");
@@ -89,7 +75,6 @@ public class Login extends AppCompatActivity {
 
                         if (response.body().toString() == "1") {
 
-
                         } else {
                             Toast.makeText(Login.this, "로그인 실패", Toast.LENGTH_LONG);
                         }
@@ -100,11 +85,10 @@ public class Login extends AppCompatActivity {
                     public void onFailure(Call<Contributor> call, Throwable t) {
                         System.out.println("fail!!");
                         t.printStackTrace();
-
                     }
                 });
             }
-        });
+        }); // 로그인 버튼 클릭이벤트
 
 
         pref = getSharedPreferences("login", Activity.MODE_PRIVATE);
@@ -174,5 +158,9 @@ public class Login extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        loginPresnter.detachView();
+    }
 }
