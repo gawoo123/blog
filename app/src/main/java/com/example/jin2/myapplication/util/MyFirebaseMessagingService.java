@@ -1,4 +1,4 @@
-package com.example.jin2.myapplication;
+package com.example.jin2.myapplication.util;
 
 /**
  * Created by jin on 2017-11-02.
@@ -13,7 +13,8 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.firebase.jobdispatcher.Constraint;
+import com.example.jin2.myapplication.MainActivity;
+import com.example.jin2.myapplication.R;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;

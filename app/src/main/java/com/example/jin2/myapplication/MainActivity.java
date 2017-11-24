@@ -1,5 +1,7 @@
 package com.example.jin2.myapplication;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,6 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.jin2.myapplication.retrofit.RetroService;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
@@ -19,9 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
     String url = "52.78.156.24/blog_api/index.php";
 
-   static FragmentTransaction transaction;
+   public static FragmentTransaction transaction;
 
    static boolean naverCheck;
+    static SharedPreferences pref;
+    static String myId;
 
 
     @Override
@@ -29,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        fragmentManager = getSupportFragmentManager();
+
+//        pref = getSharedPreferences("login", Activity.MODE_PRIVATE);
+//        myId = pref.getString("id","");
+        System.out.println("my id --> "+myId);
+
+
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.navigation);

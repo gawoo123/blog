@@ -27,14 +27,14 @@
             android:label="OAuth2.0 In-app"/>
 
         <service
-            android:name=".MyFirebaseInstanceIDService">
+            android:name=".util.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
 
         <service
-            android:name=".MyFirebaseMessagingService">
+            android:name=".util.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

@@ -1,8 +1,8 @@
-package com.example.jin2.myapplication;
+package com.example.jin2.myapplication.post_manage;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -10,14 +10,11 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.List;
+import com.example.jin2.myapplication.MainActivity;
+import com.example.jin2.myapplication.R;
 
 /**
  * Created by jin on 2017-11-07.
@@ -26,6 +23,9 @@ import java.util.List;
 public class Preview extends Fragment {
 
     static String url;
+    Button post_btn;
+    Button modify_btn;
+
     String test="setCompoundDrawablesWithIntrinsicBounds (int left, int top, int right, int bottom)\n" +
             ": 글씨의 왼쪽, 상단, 오른쪽, 아래에 이미지 추가 \n" +
             "\n" +
@@ -63,6 +63,37 @@ public class Preview extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.preview,container,false);
+
+
+
+
+
+        System.out.println("preview url ---> "+url);
+
+        post_btn = (Button) view.findViewById(R.id.preview_ok);
+        modify_btn = (Button) view.findViewById(R.id.preview_modify);
+
+        post_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("post_btn click");
+            }
+        });
+
+        modify_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                System.out.println("modifty_btn click");
+
+                MainActivity.transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                MainActivity.transaction.replace(R.id.content, post_modify.newInstance(11));
+                MainActivity.transaction.addToBackStack(null);
+                MainActivity.transaction.commit();
+
+            }
+        });
 
         /////////////
 

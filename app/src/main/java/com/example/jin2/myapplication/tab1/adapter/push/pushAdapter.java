@@ -1,4 +1,4 @@
-package com.example.jin2.myapplication;
+package com.example.jin2.myapplication.tab1.adapter.push;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,13 +7,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.jin2.myapplication.R;
+
 import java.util.ArrayList;
 
 /**
  * Created by jin on 2017-10-31.
  */
 
-public class pushAdapter extends BaseAdapter {
+public class pushAdapter extends BaseAdapter implements pushContract.Model, pushContract.View {
 
     ArrayList<push_item> push_list = new ArrayList<push_item>();
     @Override
@@ -45,18 +47,28 @@ public class pushAdapter extends BaseAdapter {
         TextView date = (TextView) convertView.findViewById(R.id.push_date);
 
         push_item item = push_list.get(position);
+
         date.setText(item.getDate());
 
         return convertView;
     }
 
-    public void addItem(String date, String idx) {
-        push_item item = new push_item();
-
-        item.setDate(date);
-        item.setIdx(idx);
-
-        push_list.add(item);
+    @Override
+    public void addItems(ArrayList<push_item> push_items) {
+        this.push_list = push_items;
     }
 
+    public String getidx(int pos){
+        return push_list.get(pos).getIdx();
+    }
+
+    @Override
+    public void clear() {
+        this.push_list = null;
+    }
+
+    @Override
+    public void notifyAdapter() {
+        notifyDataSetChanged();
+    }
 }

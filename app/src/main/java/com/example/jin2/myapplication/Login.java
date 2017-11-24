@@ -19,10 +19,12 @@ import android.widget.Toast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import com.example.jin2.myapplication.retrofit.Contributor;
 import com.example.jin2.myapplication.retrofit.RetroService;
 import com.example.jin2.myapplication.presentser.LoginPresnter;
+import com.example.jin2.myapplication.retrofit.RetrofitHelper;
 
 public class Login extends AppCompatActivity {
 
@@ -41,18 +43,38 @@ public class Login extends AppCompatActivity {
 
 
 
+    public static RetroService gitRetroService;
+//    Call<Contributor> call;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        initView();
+
+    }
+
+    void initView(){
 
         idInput = (EditText) findViewById(R.id.emailInput);
         passwordInput = (EditText) findViewById(R.id.passwordInput);
         autoLogin = (CheckBox) findViewById(R.id.checkBox);
         login_btn = (Button) findViewById(R.id.loginButton);
         sign_btn = (Button) findViewById(R.id.signupButton);
-        idInput.setText("id0");
-        passwordInput.setText("pw0");
+        idInput.setText("gawooid0");
+        passwordInput.setText("gawoopw0");
+
+//        gitRetroService = RetroService.retrofit.create(RetroService.class);
+
+        RetrofitHelper.getInstance().init();
+
+
+
+
+
+
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,26 +82,27 @@ public class Login extends AppCompatActivity {
 
                 id= String.valueOf(idInput.getText());
                 pw= String.valueOf(passwordInput.getText());
-                Intent intent = new Intent(Login.this, MainActivity.class);
-                startActivity(intent);
 
-                RetroService gitHubService = RetroService.retrofit.create(RetroService.class);
-                Call<Contributor> call = gitHubService.loginContributors("id0", "pw0");
+                MainActivity.myId=id;
+
+                Call<Contributor> call = RetrofitHelper.getInstance().CreateBaseApi().loginContributors("gawooid0", "gawoopw0");
                 System.out.println("call ->>>> "+call.request().url());
                 call.enqueue(new Callback<Contributor>() {
                     @Override
                     public void onResponse(Call<Contributor> call,
                                            Response<Contributor> response) {
 
-                        System.out.println("api res ->>>> " + response.body().toString());
-
-                        if (response.body().toString() == "1") {
-
+                        System.out.println("@api res getId->>>> " + response.body().getId());
+                        System.out.println("@api res getRes ->>>> " + response.body().getRes());
+//                        System.out.println("api res  error ->>>> " + response.errorBody());
+                        if (response.body().getRes().equals("1") && response.body().getId().equals(id)) {
+                            System.out.println("...?");
+                            Intent intent = new Intent(Login.this, MainActivity.class);
+                            startActivity(intent);
                         } else {
+                            System.out.println("실패");
                             Toast.makeText(Login.this, "로그인 실패", Toast.LENGTH_LONG);
                         }
-                        Intent intent = new Intent(Login.this, MainActivity.class);
-                        startActivity(intent);
                     }
                     @Override
                     public void onFailure(Call<Contributor> call, Throwable t) {
@@ -99,7 +122,6 @@ public class Login extends AppCompatActivity {
             passwordInput.setText(pref.getString("pw", ""));
             autoLogin.setChecked(true);
             // goto mainActivity
-
         } else {
             // if autoLogin unChecked
             String id = idInput.getText().toString();
@@ -109,7 +131,6 @@ public class Login extends AppCompatActivity {
             if(validation) {
                 Toast.makeText(Login.this, "Login Success", Toast.LENGTH_LONG).show();
                 // save id, password to Database
-
                 if(loginChecked) {
                     // if autoLogin Checked, save values
                     editor.putString("id", id);

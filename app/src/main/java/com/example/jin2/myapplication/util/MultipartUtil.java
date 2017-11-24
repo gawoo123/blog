@@ -1,4 +1,4 @@
-package com.example.jin2.myapplication;
+package com.example.jin2.myapplication.util;
 
 /**
  * Created by jin2 on 2017-10-25.

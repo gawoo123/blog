@@ -1,12 +1,14 @@
-package com.example.jin2.myapplication;
+package com.example.jin2.myapplication.tab1.adapter.post;
 
-import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.example.jin2.myapplication.R;
 
 import java.util.ArrayList;
 
@@ -14,7 +16,7 @@ import java.util.ArrayList;
  * Created by jin on 2017-10-31.
  */
 
-public class postAdapter extends BaseAdapter {
+public class postAdapter extends BaseAdapter implements postContract.Model,postContract.View {
 
     ArrayList<post_item> postItemArrayList = new ArrayList<post_item>();
 
@@ -24,7 +26,7 @@ public class postAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public post_item getItem(int position) {
         return postItemArrayList.get(position);
     }
 
@@ -45,30 +47,27 @@ public class postAdapter extends BaseAdapter {
         }
 
         final TextView date = (TextView) convertView.findViewById(R.id.post_date);
+        TextView url = (TextView) convertView.findViewById(R.id.post_url);
 
         post_item item = postItemArrayList.get(position);
         date.setText(item.getDate());
-
-//        date.setOn(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               System.out.println("눌림 --> "+postItemArrayList.get(pos).getUrl());
-//            }
-//        });
-
-
+        url.setText(item.getUrl());
 
         return convertView;
     }
 
-    public void addItem(String date, String url) {
-        post_item item = new post_item();
-
-        item.setDate(date);
-        item.setUrl(url);
-
-        postItemArrayList.add(item);
+    @Override
+    public void addItems(ArrayList<post_item> post_items) {
+        this.postItemArrayList=post_items;
     }
 
+    @Override
+    public void clear() {
+        this.postItemArrayList=null;
+    }
 
+    @Override
+    public void notifyAdapter() {
+        notifyDataSetChanged();
+    }
 }

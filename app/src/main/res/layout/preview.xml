@@ -62,11 +62,11 @@
             android:text="등록" />
 
         <Button
-            android:id="@+id/preview_cancel"
+            android:id="@+id/preview_modify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="취소" />
+            android:text="수정" />
     </LinearLayout>
 
 

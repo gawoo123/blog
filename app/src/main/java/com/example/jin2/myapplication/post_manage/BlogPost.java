@@ -1,4 +1,4 @@
-package com.example.jin2.myapplication;
+package com.example.jin2.myapplication.post_manage;
 
 import android.app.Activity;
 import android.os.Bundle;
